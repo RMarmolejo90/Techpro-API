@@ -4,7 +4,8 @@
   "description": "Backend Database API for the Techpro CRM application",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "dotenvx run -- nodemon server.ts"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,11 @@
     "url": "https://github.com/rmarmolejo90/techpro-api/issues"
   },
   "dependencies": {
-    "express": "^4.18.3"
+    "@dotenvx/dotenvx": "^0.24.0",
+    "express": "^4.18.3",
+    "helmet": "^7.1.0",
+    "mongodb": "^6.4.0",
+    "mongoose": "^8.2.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
