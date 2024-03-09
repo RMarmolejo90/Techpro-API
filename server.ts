@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
-import auth from 'express-oauth2-jwt-bearer';
+import { auth } from 'express-oauth2-jwt-bearer';
 const app = express();
 const PORT = process.env.PORT || 3000
 
@@ -20,6 +20,6 @@ app.get('/authorized', function (req, res) {
     res.send('Test Resource');
 });
 
-app.listen(PORT;
+app.listen(PORT);
 
 console.log('Running on port ', PORT);
