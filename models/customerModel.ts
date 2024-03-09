@@ -14,4 +14,6 @@ const customerSchema = new Schema ({
   notes: [{note: String, date: Date}]
 })
 
+export const Customer = mongoose.model('Customer', customerSchema);
+
 
