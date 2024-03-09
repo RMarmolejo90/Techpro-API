@@ -1,17 +1,25 @@
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
-
-
+import auth from 'express-oauth2-jwt-bearer';
 const app = express();
 const PORT = process.env.PORT || 3000
 
 // use helmet for security headers
 app.use(helmet);
 
-app.listen(PORT, (error?: Error) => {
-    if (!error){
-        console.log(process.env.HELLO);
-        console.log(`Server is Successfully Running, and App is listening on port ${PORT}`);}
-    else
-        {console.log("Error occurred, server can't start", error);}
+const jwtCheck = auth({
+  audience: 'https://techpro-crm.com',
+  issuerBaseURL: 'https://dev-68fa5uuafcp1ug3t.us.auth0.com/',
+  tokenSigningAlg: 'RS256'
 });
+
+// enforce on all endpoints
+app.use(jwtCheck);
+
+app.get('/authorized', function (req, res) {
+    res.send('Test Resource');
+});
+
+app.listen(PORT;
+
+console.log('Running on port ', PORT);
