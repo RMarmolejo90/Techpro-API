@@ -13,7 +13,18 @@ function formatSteetAddress(address: string): string {
     ['Lane', 'Ln'],
     ['Boulevard', 'Blvd'],
     ['Highway', 'Hwy'],
-    ['Parkway', 'Pkwy']
+    ['Parkway', 'Pkwy'],
+    ['Suite', 'Ste'],
+    ['Apartment', 'Apt'],
+    ['Building', 'Bldg'],
+    ['Court', 'Ct'],
+    ['Room', 'Rm'],
+    ['Place', 'Pl'],
+    ['Circle', 'Cir'],
+    ['Suare', 'Sq'],
+    ['Department', 'Dept'],
+    ['Floor', 'Fl'],
+    ['Terrace', 'Terr']
   ]);
 
   // Split the address into words
