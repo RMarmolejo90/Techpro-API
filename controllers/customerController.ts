@@ -2,7 +2,7 @@ import { Customer } from "../models/customerModel";
 
 // I need to create a global interface for Address
 interface Address {
-    company: string,
+    customerName: string,
     city: string,
     address: string,
 }
