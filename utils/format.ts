@@ -1,6 +1,6 @@
 // functions for formatting the database data
 
-function formatSteetAddress(address: string): string {
+function formatString(address: string): string {
   // Helper function to capitalize each word
   const capitalizeWords = (str: string) => str.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
 
@@ -45,6 +45,6 @@ function formatSteetAddress(address: string): string {
 }
 
 
-module.exports = {
-  formatSteetAddress,
+export {
+  formatString,
 }
