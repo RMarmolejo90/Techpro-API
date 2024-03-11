@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const customerSchema = new Schema ({
-  customerName: String,
-  city: String,
-  address: String,
+  customerName: {type: String, index: true},
+  city: {type: String, index: true},
+  address: {type: String, index: true},
   equipment: {
     system: [{
       name: String, 
