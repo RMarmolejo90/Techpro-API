@@ -33,7 +33,7 @@ const updateCustomer = async () => {}
 
 const deleteCustomer = async () => {}
 
-module.exports = {
+export {
   createCustomer,
   fetchCustomer,
   updateCustomer,
