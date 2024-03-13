@@ -1,10 +1,13 @@
-import { createCustomer, fetchCustomer, updateCustomer, deleteCustomer } from '../controllers/customerController'
-import express  from 'express'
+import express from "express";
+
+const { createCust, fetchCust, updateCust, deleteCust } = require('../controllers/customerController');
+
 const router = express.Router();
+router.use(express.json());
 
-router.post('/customer', createCustomer);
-router.get('/customer', fetchCustomer);
-router.put('/customer', updateCustomer);
-router.delete('/customer', deleteCustomer);
+router.post('/customer', createCust);
+router.get('/customer', fetchCust);
+router.put('/customer', updateCust);
+router.delete('/customer', deleteCust);
 
-
+export default router;
