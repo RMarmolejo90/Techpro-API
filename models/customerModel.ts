@@ -14,7 +14,7 @@ const EquipmentSchema = new Schema({
   }, {_id: true}
 );
 
-const customerSchema = new Schema ({
+const CustomerSchema = new Schema ({
   customerName: {type: String, index: true},
   city: {type: String, index: true},
   address: {type: String, index: true},
@@ -22,6 +22,9 @@ const customerSchema = new Schema ({
   locationNotes: [{note: String, date: Date}]
 })
 
-export const Customer = mongoose.model('Customer', customerSchema);
+const Customer = mongoose.model('Customer', CustomerSchema);
+const Equipment = mongoose.model('Equipment', EquipmentSchema)
+
+export { Customer, Equipment }
 
 

@@ -1,4 +1,4 @@
-import { Customer } from "../models/customerModel.js";
+import { Customer, Equipment } from "../models/customerModel.js";
 import { formatString } from "../utils/format.js";
 import { Request, Response } from "express";
 
@@ -32,8 +32,10 @@ const createCustomer =  async (req: Request, res: Response) => {
     } else {
       console.log('customer already exists');}
     }
-  catch 
-    { throw new Error('error checking for duplicates in database') }
+  catch (error) { 
+    console.error(error);
+    res.status(500).send('An error occurred while creating the customer'); 
+  }
 }
 
 
@@ -68,10 +70,13 @@ const updateEquipment = async (req: Request, res: Response) => {
 
 
 // adds a new piece of equipment to the customer document
+// This should be updated to accept a "NewEquipment" type, with required and nullible values
 const addEquipment = async (req: Request, res: Response) => {
   const customerId = req.params;
+  const equipmentDetails = req.body;
+  const newEquipment = new Equipment({equipmentDetails});
   try {
-    
+    await Customer.findByIdAndUpdate({equipment: newEquipment})
   } catch (error) {
     
   }
