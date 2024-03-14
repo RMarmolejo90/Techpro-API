@@ -16,27 +16,35 @@ const createCustomer =  async (req: Request, res: Response) => {
     const formattedCustomerName = formatString(customerName)
     const formattedCity = formatString(city)
     const formattedAddress = formatString(address)
+    const newCustomer = new Customer({
+        customerName: formattedCustomerName,
+        city: formattedCity,
+        address: formattedAddress,
+      });
+
     // check db for street address
     const customerExists: boolean = (await Customer.exists({city: formattedCity, address: formattedAddress})) !== null;
+    
     // if address not in db - create new customer
-      if (!customerExists){
-        console.log('customer does not exist');
-        console.log('save to database');
-      } else {
-        console.log('customer already exists');
-      }}
+    if (!customerExists){
+      await newCustomer.save();
+      res.status(201).send('New customer was created')
+    } else {
+      console.log('customer already exists');}
+    }
   catch 
     { throw new Error('error checking for duplicates in database') }
 }
 
 
+// accepts city and address, returns the customer object data
 const fetchCustomer = async (req: Request, res: Response) => {
   try {  
     const { address, city } = req.body;
     const formattedAddress: string = formatString(address);
     const formattedCity: string = formatString(city);
     const data = await Customer.findOne({city: formattedCity, address: formattedAddress});
-    return data;
+    res.json(data);
   } 
   catch {
     res.status(500).send('Error fetching customer data');
@@ -44,12 +52,14 @@ const fetchCustomer = async (req: Request, res: Response) => {
 }
 
 
+// updates properties for existing equipment
 const updateEquipment = async (req: Request, res: Response) => {
   try {const { customerId, equipmentId } = req.params;
     const equipmentUpdates: string = req.body;
-    const update = await Customer.findOneAndUpdate({_id: customerId, "equipment._id": equipmentId},
+    await Customer.findOneAndUpdate({_id: customerId, "equipment._id": equipmentId},
       { $set: {"equipment.$": equipmentUpdates } }, { new: true }
     );
+    res.status(200).send('Equipment Updated');
   } 
   catch {
       res.status(500).send('Error updating data');
@@ -57,6 +67,18 @@ const updateEquipment = async (req: Request, res: Response) => {
 }
 
 
+// adds a new piece of equipment to the customer document
+const addEquipment = async (req: Request, res: Response) => {
+  const customerId = req.params;
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+
+
+// deletes the customer permanently
 const deleteCustomer = async (req: Request, res: Response) => {
   const customerId = req.params; 
   // check db for street address
@@ -78,6 +100,7 @@ module.exports = {
   createCustomer,
   fetchCustomer,
   updateEquipment,
-  deleteCustomer
+  deleteCustomer,
+  addEquipment
 }
 
