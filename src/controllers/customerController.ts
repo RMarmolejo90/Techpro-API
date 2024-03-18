@@ -10,6 +10,7 @@ interface CustomerData {
 }
 
 
+// Create new customer
 const createCustomer =  async (req: Request, res: Response) => {
   try {
     const {customerName, city, address}: CustomerData = req.body
@@ -39,6 +40,7 @@ const createCustomer =  async (req: Request, res: Response) => {
 }
 
 
+// Get customer data
 // accepts city and address, returns the customer object data
 const fetchCustomer = async (req: Request, res: Response) => {
   try {  
@@ -54,7 +56,8 @@ const fetchCustomer = async (req: Request, res: Response) => {
 }
 
 
-// updates properties for existing equipment
+
+// Updates the properties of existing equipment
 const updateEquipment = async (req: Request, res: Response) => {
   try {const { customerId, equipmentId } = req.params;
     const equipmentUpdates: string = req.body;
@@ -69,23 +72,25 @@ const updateEquipment = async (req: Request, res: Response) => {
 }
 
 
-// adds a new piece of equipment to the customer document
-// This should be updated to accept a "NewEquipment" type, with required and nullible values
+// Add a new piece of equipment to an existing customer
 const addEquipment = async (req: Request, res: Response) => {
-  const customerId = req.params;
+  const customerId = req.params.customerId;
   const equipmentDetails = req.body;
-  const newEquipment = new Equipment({equipmentDetails});
   try {
-    await Customer.findByIdAndUpdate({equipment: newEquipment})
+    await Customer.findByIdAndUpdate(
+      customerId,
+      { $push: {equipment: equipmentDetails} },
+      { new: true, safe: true, upsert: false }
+    )
   } catch (error) {
-    
+    res.status(500).send('Error adding equipment details');
   }
 }
 
 
-// deletes the customer permanently
+// delete the customer permanently
 const deleteCustomer = async (req: Request, res: Response) => {
-  const customerId = req.params; 
+  const customerId = req.params.customerId; 
   // check db for street address
   const customerExists: boolean = (await Customer.exists({_id: customerId})) !== null;
   if (!customerExists) {res.status(404).send('customer does not exist')}

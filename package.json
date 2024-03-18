@@ -2,13 +2,16 @@
   "name": "techpro-api",
   "version": "1.0.0",
   "description": "Backend Database API for the Techpro CRM application",
-  "main": "server.ts",
+  "main": "server",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "dotenvx run -- nodemon server.ts",
-    "build": "tsc"
-
+    "tsc": "tsc",
+    "watch-tsc": "tsc -w",
+    "deploy": "node src/dist/server.js",
+    "watch-deploy": "nodemon src/dist/server.js",
+    "server": "concurrently \"npm run watch-tsc\" \"npm run watch-deploy\"",
+    "start": "npm run deploy"
   },
   "repository": {
     "type": "git",
@@ -23,19 +26,22 @@
     "url": "https://github.com/rmarmolejo90/techpro-api/issues"
   },
   "dependencies": {
-    "@dotenvx/dotenvx": "^0.14.0",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
     "express-oauth2-jwt-bearer": "^1.6.0",
-    "express-ts": "^0.0.1-dev.5",
     "helmet": "^7.1.0",
     "jose": "^5.2.3",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.1",
-    "node": "^21.7.1"
+    "node": "^21.7.1",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.27",
-    "@types/update-notifier": "^6.0.8",
     "typescript": "^5.4.2"
   }
 }

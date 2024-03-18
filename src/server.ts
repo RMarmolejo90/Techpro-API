@@ -1,8 +1,8 @@
-import express { Response, Request } from 'express';
+import express from 'express';
+import { Response, Request } from 'express';
 import helmet from 'helmet';
 import { auth } from 'express-oauth2-jwt-bearer';
-import customerRoutes from './routes/customerRoutes';
-import { Router } from 'express';
+import customerRoutes from './routes/customerRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 3000
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use(jwtCheck);
 // api routes
 app.use('/customer', customerRoutes);
 
-app.get('/authorized', function (_req: Request, res: Express.Response) {
+app.get('/authorized', function (_req: Request, res: Response) {
     res.status(200).send('test');
 });
 
