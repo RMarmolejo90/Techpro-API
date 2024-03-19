@@ -17,3 +17,5 @@ async function connectDB() {
     throw new Error ('Error connecting to the databse');
   }
 }
+
+export default connectDB;

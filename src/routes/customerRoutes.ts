@@ -7,7 +7,7 @@ router.use(express.json());
 
 router.post('/customer', createCust);
 router.get('/customer', fetchCust);
-router.put('/customer', updateCust);
+router.patch('/customer', updateCust);
 router.delete('/customer', deleteCust);
 
 export default router;
