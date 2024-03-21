@@ -1,4 +1,4 @@
-import { Customer, Equipment } from "../models/customerModel.js";
+import { Customer } from "../models/customerModel.js";
 import { formatString } from "../utils/format.js";
 import { Request, Response } from "express";
 
@@ -128,7 +128,7 @@ const deleteCustomer = async (req: Request, res: Response) => {
 }
 
 
-module.exports = {
+export default {
   createCustomer,
   fetchCustomer,
   updateEquipment,
