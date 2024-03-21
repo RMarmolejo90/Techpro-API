@@ -15,12 +15,12 @@ app.use(helmet());
 await connectDB();
 
 const jwtCheck = auth({
-  audience: 'https://techpro-crm.com',
-  issuerBaseURL: 'https://dev-68fa5uuafcp1ug3t.us.auth0.com/',
+  audience: 'https://techpro-cms',
+  issuerBaseURL: 'https://cms-techpro.us.auth0.com/',
   tokenSigningAlg: 'RS256'
 });
 
-const adminPerminssions = requiredScopes('')
+const adminPermissions = requiredScopes('')
 
 // enforce on all endpoints
 // not used during development
@@ -30,7 +30,7 @@ const adminPerminssions = requiredScopes('')
 // api routes
 app.use('/customer', customerRoutes);
 
-app.use('/users', auth, requiredScopes);
+app.use('/users', auth, adminPermissions);
 
 app.get('/authorized', function (_req: Request, res: Response) {
     res.status(200).send('test');
