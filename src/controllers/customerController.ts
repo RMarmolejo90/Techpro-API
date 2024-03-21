@@ -62,7 +62,28 @@ const fetchCustomer = async (req: Request, res: Response) => {
   }
 }
 
+// Update existing customer details
+const updateCustomer = async (req: Request, res: Response) => {
+  const { customerId } = req.params;
+  const updateData = req.body;
 
+  try {
+    const updatedCustomer = await Customer.findByIdAndUpdate(
+      customerId,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCustomer) {
+      return res.status(404).send('Customer not found');
+    }
+
+    res.status(200).json(updatedCustomer);
+  } catch (error) {
+    console.error('Error updating customer:', error);
+    res.status(500).send('An error occurred while updating the customer');
+  }
+}
 
 // Updates the properties of existing equipment
 const updateEquipment = async (req: Request, res: Response) => {
@@ -128,9 +149,10 @@ const deleteCustomer = async (req: Request, res: Response) => {
 }
 
 
-export default {
+export {
   createCustomer,
   fetchCustomer,
+  updateCustomer,
   updateEquipment,
   deleteCustomer,
   addEquipment,
