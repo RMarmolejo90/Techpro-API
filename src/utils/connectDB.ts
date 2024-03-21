@@ -1,21 +1,20 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const DBURI:string = process.env.DBURI as string;
-
-if (!DBURI){
-  console.error('database uri not found, issue with the .env connection uri');
-  process.exit(1);
-}
-
-connectDB().catch(err => console.log(err));
-
-async function connectDB() {
-  try{
-  await mongoose.connect(DBURI);
-  console.log('connected to database');
-  } catch {
-    throw new Error ('Error connecting to the databse');
+const connectDB = async () => {
+  const DBURI = process.env.DBURI;
+  
+  if (!DBURI) {
+    console.error('Database URI not found, issue with the .env connection URI');
+    process.exit(1);
   }
-}
+
+  try {
+    await mongoose.connect(DBURI);
+    console.log('Connected to database');
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+    throw error;
+  }
+};
 
 export default connectDB;

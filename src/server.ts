@@ -1,7 +1,7 @@
 import express from 'express';
 import { Response, Request } from 'express';
 import helmet from 'helmet';
-import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
+import { auth } from 'express-oauth2-jwt-bearer';
 import customerRoutes from './routes/customerRoutes.js';
 import connectDB from './utils/connectDB.js';
 const app = express();
@@ -12,29 +12,26 @@ app.use(express.json());
 app.use(helmet());
 
 //connect to database
-await connectDB();
-
-const jwtCheck = auth({
-  audience: 'https://techpro-cms',
-  issuerBaseURL: 'https://cms-techpro.us.auth0.com/',
-  tokenSigningAlg: 'RS256'
+connectDB().then(() => {
+  console.log('Connected to database successfully.');
+}).catch(err => {
+  console.error('Failed to connect to the database:', err.message);
+  process.exit(1);
 });
 
-const adminPermissions = requiredScopes('')
+const jwtCheck = auth({
+  audience: process.env.AUDIENCE,
+  issuerBaseURL: process.env.ISSUERBASEURL,
+  tokenSigningAlg: process.env.TOKENTYPE
+});
+
 
 // enforce on all endpoints
-// not used during development
-// app.use(jwtCheck);
+app.use(jwtCheck);
 
 
 // api routes
 app.use('/customer', customerRoutes);
-
-app.use('/users', auth, adminPermissions);
-
-app.get('/authorized', function (_req: Request, res: Response) {
-    res.status(200).send('test');
-});
 
 // start server
 app.listen(PORT);

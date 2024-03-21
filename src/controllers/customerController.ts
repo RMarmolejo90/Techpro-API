@@ -7,35 +7,42 @@ interface CustomerData {
   customerName: string,
   city: string,
   address: string,
+  zip: number
 }
 
 
 // Create new customer
 const createCustomer =  async (req: Request, res: Response) => {
-  try {
-    const {customerName, city, address}: CustomerData = req.body
-    const formattedCustomerName = formatString(customerName)
-    const formattedCity = formatString(city)
-    const formattedAddress = formatString(address)
-    const newCustomer = new Customer({
-        customerName: formattedCustomerName,
-        city: formattedCity,
-        address: formattedAddress,
-      });
-
-    // check db for street address
-    const customerExists: boolean = (await Customer.exists({city: formattedCity, address: formattedAddress})) !== null;
-    
-    // if address not in db - create new customer
-    if (!customerExists){
-      await newCustomer.save();
-      res.status(201).send('New customer was created')
-    } else {
-      console.log('customer already exists');}
+  const {customerName, city, address, zip}: CustomerData = req.body
+  const formattedCustomerName = formatString(customerName)
+  const formattedCity = formatString(city)
+  const formattedAddress = formatString(address)
+  if (zip.toLocaleString.length === 5) {
+    const formattedZip = zip
+    try {
+      const newCustomer = new Customer({
+          customerName: formattedCustomerName,
+          city: formattedCity,
+          address: formattedAddress,
+          zip: formattedZip,
+        });
+  
+      // check db for street address
+      const customerExists: boolean = (await Customer.exists({city: formattedCity, address: formattedAddress})) !== null;
+      
+      // if address not in db - create new customer
+      if (!customerExists){
+        await newCustomer.save();
+        res.status(201).send('New customer was created')
+      } else {
+        console.log('customer already exists');}
+      }
+    catch (error) { 
+      console.error(error);
+      res.status(500).send('An error occurred while creating the customer'); 
     }
-  catch (error) { 
-    console.error(error);
-    res.status(500).send('An error occurred while creating the customer'); 
+  } else {
+    res.status(400).send('incorrect zip code format')
   }
 }
 
@@ -87,6 +94,21 @@ const addEquipment = async (req: Request, res: Response) => {
   }
 }
 
+// Delete existing equipment
+const deleteEquipment = async (req: Request, res: Response) => {
+  const { customerId, equipmentId } = req.params;
+  try {
+    await Customer.findByIdAndUpdate(customerId,
+      { $pull: { equipment: { _id: equipmentId } } },
+      { new: true }
+    );
+    res.status(200).send('Equipment deleted');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting equipment');
+  }
+}
+
 
 // delete the customer permanently
 const deleteCustomer = async (req: Request, res: Response) => {
@@ -111,6 +133,7 @@ module.exports = {
   fetchCustomer,
   updateEquipment,
   deleteCustomer,
-  addEquipment
+  addEquipment,
+  deleteEquipment,
 }
 
