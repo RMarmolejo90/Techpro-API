@@ -1,3 +1,4 @@
+import { exit } from "process";
 import { Customer } from "../models/customerModel.js";
 import { formatString } from "../utils/format.js";
 import { Request, Response } from "express";
@@ -17,7 +18,8 @@ const createCustomer =  async (req: Request, res: Response) => {
   const formattedCustomerName = formatString(customerName)
   const formattedCity = formatString(city)
   const formattedAddress = formatString(address)
-  if (zip.toLocaleString.length === 5) {
+  if (!zip) {return res.status(400).send({ error: "Missing required 'zip' field." });}
+  if (zip.toString().length === 5) {
     const formattedZip = zip
     try {
       const newCustomer = new Customer({

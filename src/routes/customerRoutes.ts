@@ -8,16 +8,15 @@ import {
   addEquipment,
   deleteEquipment
 } from '../controllers/customerController.js'
-
 const router = express.Router();
 router.use(express.json());
 
-router.post('/customer', createCustomer);
-router.get('/customer', fetchCustomer);
-router.patch('/customer', updateCustomer);
-router.delete('/customer', deleteCustomer);
-router.patch('customer/equipment', updateEquipment);
-router.post('customer/equipment', addEquipment);
-router.delete('customer/equipment', deleteEquipment);
+router.post('/', createCustomer);
+router.get('/', fetchCustomer);
+router.patch('/', updateCustomer);
+router.delete('/', deleteCustomer);
+router.patch('/equipment', updateEquipment);
+router.post('/equipment', addEquipment);
+router.delete('/equipment', deleteEquipment);
 
 export default router;

@@ -23,15 +23,19 @@ const jwtCheck = auth({
 
 
 // enforce on all endpoints
-app.use(jwtCheck);
+//app.use(jwtCheck);
 
 
 // api routes
 app.use('/customer', customerRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the API');
+});
+
 // start server
 app.listen(PORT, () => {
-  connectDB().then(() => console.log('Database connected')).catch((err) => console.error('Database connection error:', err));
+  connectDB().catch((err) => console.error('Database connection error:', err));
   console.log('Running on coffee');
 });
 
