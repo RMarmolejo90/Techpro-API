@@ -1,4 +1,3 @@
-import { exit } from "process";
 import { Customer } from "../models/customerModel.js";
 import { formatString } from "../utils/format.js";
 import { Request, Response } from "express";
@@ -19,35 +18,32 @@ const createCustomer =  async (req: Request, res: Response) => {
   const formattedCity = formatString(city)
   const formattedAddress = formatString(address)
   if (!zip) {return res.status(400).send({ error: "Missing required 'zip' field." });}
-  if (zip.toString().length === 5) {
-    const formattedZip = zip
-    try {
-      const newCustomer = new Customer({
-          customerName: formattedCustomerName,
-          city: formattedCity,
-          address: formattedAddress,
-          zip: formattedZip,
-        });
-  
-      // check db for street address
-      const customerExists: boolean = (await Customer.exists({city: formattedCity, address: formattedAddress})) !== null;
-      
-      // if address not in db - create new customer
-      if (!customerExists){
+  else { 
+      // reduce the chance of duplicate entries by checking the db for existing addresses
+    if (await Customer.exists({address: formattedAddress, zip: zip}))
+      { res.status(400).send({ error: "Customer already exists" })}
+    else if (zip.toString().length === 5) {
+      const formattedZip = zip
+      try {
+        const newCustomer = new Customer({
+            customerName: formattedCustomerName,
+            city: formattedCity,
+            address: formattedAddress,
+            zip: formattedZip,
+          });
+    
         await newCustomer.save();
         res.status(201).send('New customer was created')
-      } else {
-        console.log('customer already exists');}
+        }
+      catch (error) { 
+        console.error(error);
+        res.status(500).send('An error occurred while creating the customer'); 
       }
-    catch (error) { 
-      console.error(error);
-      res.status(500).send('An error occurred while creating the customer'); 
-    }
-  } else {
+    } else {
     res.status(400).send('incorrect zip code format')
+    }
   }
 }
-
 
 // Get customer data
 // accepts city and address, returns the customer object data
@@ -87,51 +83,6 @@ const updateCustomer = async (req: Request, res: Response) => {
   }
 }
 
-// Updates the properties of existing equipment
-const updateEquipment = async (req: Request, res: Response) => {
-  try {const { customerId, equipmentId } = req.params;
-    const equipmentUpdates: string = req.body;
-    await Customer.findOneAndUpdate({_id: customerId, "equipment._id": equipmentId},
-      { $set: {"equipment.$": equipmentUpdates } }, { new: true }
-    );
-    res.status(200).send('Equipment Updated');
-  } 
-  catch {
-      res.status(500).send('Error updating data');
-    }
-}
-
-
-// Add a new piece of equipment to an existing customer
-const addEquipment = async (req: Request, res: Response) => {
-  const customerId = req.params.customerId;
-  const equipmentDetails = req.body;
-  try {
-    await Customer.findByIdAndUpdate(
-      customerId,
-      { $push: {equipment: equipmentDetails} },
-      { new: true, safe: true, upsert: false }
-    )
-  } catch (error) {
-    res.status(500).send('Error adding equipment details');
-  }
-}
-
-// Delete existing equipment
-const deleteEquipment = async (req: Request, res: Response) => {
-  const { customerId, equipmentId } = req.params;
-  try {
-    await Customer.findByIdAndUpdate(customerId,
-      { $pull: { equipment: { _id: equipmentId } } },
-      { new: true }
-    );
-    res.status(200).send('Equipment deleted');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error deleting equipment');
-  }
-}
-
 
 // delete the customer permanently
 const deleteCustomer = async (req: Request, res: Response) => {
@@ -155,9 +106,6 @@ export {
   createCustomer,
   fetchCustomer,
   updateCustomer,
-  updateEquipment,
-  deleteCustomer,
-  addEquipment,
-  deleteEquipment,
+  deleteCustomer
 }
 

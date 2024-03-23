@@ -1,16 +1,28 @@
 import express from "express";
+
+// customer route imports
 import {
   createCustomer,
   fetchCustomer, 
   updateCustomer, 
   deleteCustomer,
+} from '../controllers/customerController.js'
+
+// equipment route imports
+import {
   updateEquipment,
   addEquipment,
   deleteEquipment
-} from '../controllers/customerController.js'
+} from '../controllers/equipmentController.js'
+
+// use express router
 const router = express.Router();
+
+// use json format
 router.use(express.json());
 
+
+// API routes
 router.post('/', createCustomer);
 router.get('/', fetchCustomer);
 router.patch('/', updateCustomer);
