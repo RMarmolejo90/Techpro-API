@@ -48,11 +48,10 @@ const createCustomer =  async (req: Request, res: Response) => {
 // Get customer data
 // accepts city and address, returns the customer object data
 const fetchCustomer = async (req: Request, res: Response) => {
-  try {  
-    const { address, city } = req.body;
+  try { 
+    const { address, zip } = req.body; 
     const formattedAddress: string = formatString(address);
-    const formattedCity: string = formatString(city);
-    const data = await Customer.findOne({city: formattedCity, address: formattedAddress});
+    const data = await Customer.findOne({ address: formattedAddress, zip: zip });
     res.json(data);
   } 
   catch {
