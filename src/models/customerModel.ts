@@ -15,7 +15,7 @@ const EquipmentSchema = new Schema({
 );
 
 const CustomerSchema = new Schema ({
-  customerName: {type: String, index: true, required: true},
+  name: {type: String, index: true, required: true},
   city: {type: String, index: true, required: true},
   address: {type: String, index: true, required: true},
   zip: {type: Number, index: true, required: true},

@@ -3,7 +3,7 @@ import { formatString } from "../utils/format.js";
 import { Request, Response } from "express";
 
 type CustomerData = {
-  customerName: string;
+  name: string;
   city: string;
   address: string;
   zip: number;
@@ -17,8 +17,8 @@ interface SearchRequest {
 
 // Create new customer
 const createCustomer =  async (req: Request, res: Response) => {
-  const {customerName, city, address, zip}: CustomerData = req.body
-  const formattedCustomerName = formatString(customerName)
+  const {name, city, address, zip}: CustomerData = req.body
+  const formattedName = formatString(name)
   const formattedCity = formatString(city)
   const formattedAddress = formatString(address)
   if (!zip) {return res.status(400).send({ error: "Missing required 'zip' field." });}
@@ -30,7 +30,7 @@ const createCustomer =  async (req: Request, res: Response) => {
       const formattedZip = zip
       try {
         const newCustomer = new Customer({
-            customerName: formattedCustomerName,
+            name: formattedName,
             city: formattedCity,
             address: formattedAddress,
             zip: formattedZip,
