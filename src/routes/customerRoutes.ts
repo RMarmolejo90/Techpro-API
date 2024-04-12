@@ -4,6 +4,7 @@ import express from "express";
 import {
   createCustomer,
   searchCustomers, 
+  fetchCustomer,
   updateCustomer, 
   deleteCustomer,
 } from '../controllers/customerController.js'
@@ -27,6 +28,7 @@ router.post('/', createCustomer);
 router.get('/', searchCustomers);
 router.patch('/', updateCustomer);
 router.delete('/', deleteCustomer);
+router.get('/customer', fetchCustomer);
 router.patch('/equipment', updateEquipment);
 router.post('/equipment', addEquipment);
 router.delete('/equipment', deleteEquipment);
