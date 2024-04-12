@@ -3,7 +3,7 @@ import express from "express";
 // customer route imports
 import {
   createCustomer,
-  fetchCustomer, 
+  searchCustomers, 
   updateCustomer, 
   deleteCustomer,
 } from '../controllers/customerController.js'
@@ -24,7 +24,7 @@ router.use(express.json());
 
 // API routes
 router.post('/', createCustomer);
-router.get('/', fetchCustomer);
+router.get('/', searchCustomers);
 router.patch('/', updateCustomer);
 router.delete('/', deleteCustomer);
 router.patch('/equipment', updateEquipment);

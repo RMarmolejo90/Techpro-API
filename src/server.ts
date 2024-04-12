@@ -6,7 +6,7 @@ import { auth } from 'express-oauth2-jwt-bearer';
 import customerRoutes from './routes/customerRoutes.js';
 import connectDB from './utils/connectDB.js';
 const app = express();
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
 app.use(express.json());
 

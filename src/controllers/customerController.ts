@@ -2,12 +2,16 @@ import { Customer } from "../models/customerModel.js";
 import { formatString } from "../utils/format.js";
 import { Request, Response } from "express";
 
- // I need to create a global interface for Address
-interface CustomerData {
-  customerName: string,
-  city: string,
-  address: string,
-  zip: number
+type CustomerData = {
+  customerName: string;
+  city: string;
+  address: string;
+  zip: number;
+}
+
+interface SearchRequest {
+  searchType: "name" | "city" | "address" | "zip",
+  searchText: string;
 }
 
 
@@ -45,16 +49,23 @@ const createCustomer =  async (req: Request, res: Response) => {
   }
 }
 
+
+
 // Get customer data
-// accepts city and address, returns the customer object data
-const fetchCustomer = async (req: Request, res: Response) => {
+const searchCustomers = async (req: Request, res: Response): Promise<void> => {
   try { 
-    const { address, zip } = req.body; 
-    const formattedAddress: string = formatString(address);
-    const data = await Customer.findOne({ address: formattedAddress, zip: zip });
+    const { searchType, searchText }: SearchRequest = req.body; // Destructure and specify type
+    const formattedText = formatString(searchText);
+    
+    // Constructed the query object dynamically
+    const query: Record<string, string> = {}; // Define query object
+    query[searchType] = formattedText; // Assign the property dynamically
+
+    const data = await Customer.find(query); 
     res.json(data);
   } 
-  catch {
+  catch (error) {
+    console.error(error);
     res.status(500).send('Error fetching customer data');
   }
 }
@@ -103,7 +114,7 @@ const deleteCustomer = async (req: Request, res: Response) => {
 
 export {
   createCustomer,
-  fetchCustomer,
+  searchCustomers,
   updateCustomer,
   deleteCustomer
 }
