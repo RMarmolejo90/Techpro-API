@@ -52,15 +52,18 @@ const createCustomer =  async (req: Request, res: Response) => {
 // Get customer data
 const searchCustomers = async (req: Request, res: Response): Promise<void> => {
   try { 
-    const { searchType, searchText }: SearchRequest = req.body; // Destructure and specify type
+    const { searchType, searchText }: SearchRequest = req.body;
+    if (!searchType || !searchText) {res.json('insufficient request data');}
+    else {
     const formattedText = formatString(searchText);
     
-    // Constructed the query object dynamically
+    // Construct the query object dynamically
     const query: Record<string, string> = {}; // Define query object
     query[searchType] = formattedText; // Assign the property dynamically
 
     const data = await Customer.find(query); 
     res.json(data);
+    }
   } 
   catch (error) {
     console.error(error);

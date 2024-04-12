@@ -25,10 +25,10 @@ router.use(express.json());
 
 // API routes
 router.post('/', createCustomer);
-router.get('/', searchCustomers);
-router.patch('/', updateCustomer);
-router.delete('/', deleteCustomer);
-router.get('/customer', fetchCustomer);
+router.get('/search', searchCustomers);
+router.patch('/:id', updateCustomer);
+router.delete('/:id', deleteCustomer);
+router.get('/:id', fetchCustomer);
 router.patch('/equipment', updateEquipment);
 router.post('/equipment', addEquipment);
 router.delete('/equipment', deleteEquipment);

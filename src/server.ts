@@ -27,7 +27,7 @@ const jwtCheck = auth({
 
 
 // api routes
-app.use('/customer', customerRoutes);
+app.use('/customers', customerRoutes);
 
 
 // start server
