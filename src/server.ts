@@ -29,9 +29,6 @@ const jwtCheck = auth({
 // api routes
 app.use('/customer', customerRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Welcome to the API');
-});
 
 // start server
 app.listen(PORT, () => {
