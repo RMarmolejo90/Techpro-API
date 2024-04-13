@@ -74,15 +74,11 @@ const searchCustomers = async (req: Request, res: Response): Promise<void> => {
 // Fetch a specific customers data
 const fetchCustomer = async (req: Request, res: Response) => {
   try { 
-    const { id } = req.body; 
-    const data = await Customer.findOne({ _id: id });
-    if (!data){
-      res.json(data);
-    } else {
-      res.send('Customer ID was not found');
+    const id = req.body; 
+    const data = await Customer.findById(id).exec();
+    res.json(data);
     }
-  } 
-  catch {
+    catch {
     res.status(500).send('Error fetching customer data');
   }
 }
