@@ -29,8 +29,8 @@ router.get('/search', searchCustomers);
 router.patch('/:id', updateCustomer);
 router.delete('/:id', deleteCustomer);
 router.get('/:id', fetchCustomer);
-router.patch('/equipment', updateEquipment);
+router.patch('/equipment/:id', updateEquipment);
 router.post('/equipment', addEquipment);
-router.delete('/equipment', deleteEquipment);
+router.delete('/equipment/:id', deleteEquipment);
 
 export default router;

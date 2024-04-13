@@ -3,9 +3,9 @@ import { Customer } from '../models/customerModel.js';
 
 // Updates the properties of existing equipment
 const updateEquipment = async (req: Request, res: Response) => {
-  try {const { customerId, equipmentId } = req.params;
+  try {const { equipmentId } = req.params;
     const equipmentUpdates: string = req.body;
-    await Customer.findOneAndUpdate({_id: customerId, "equipment._id": equipmentId},
+    await Customer.findOneAndUpdate({_id: equipmentId},
       { $set: {"equipment.$": equipmentUpdates } }, { new: true }
     );
     res.status(200).send('Equipment Updated');
