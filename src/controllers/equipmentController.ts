@@ -18,8 +18,8 @@ const updateEquipment = async (req: Request, res: Response) => {
 
 // Add a new piece of equipment to an existing customer
 const addEquipment = async (req: Request, res: Response) => {
-  const customerId = req.params.customerId;
-  const equipmentDetails = req.body;
+  const customerId = req.body.customerId;
+  const equipmentDetails = req.body.equipment;
   try {
     await Customer.findByIdAndUpdate(
       customerId,
