@@ -1,6 +1,27 @@
 import { Request, Response } from "express";
 import { Customer } from '../models/customerModel.js';
 
+// Fetch Equipment Details using Equipment Id
+
+const fetchEquipment = async (req: Request, res: Response) => {
+  try {
+    const { equipmentId } = req.params;
+    const customer = await Customer.findOne({ "equipment._id": equipmentId });
+    if (!customer) {
+      return res.status(404).send("Customer not found"); // Customer not found
+    }
+    if (!customer.equipment) {
+      return res.status(404).send("Equipment not found"); // Equipment not found
+    }
+    const equipment = customer.equipment.find(e => e._id?.toString() == equipmentId);
+    res.status(200).json(equipment); // Return equipment details
+  } catch (error) {
+    console.error("Error fetching equipment details:", error);
+    res.status(500).send("Error fetching equipment details");
+  }
+}
+
+
 // Updates the properties of existing equipment
 const updateEquipment = async (req: Request, res: Response) => {
   try {const { equipmentId } = req.params;
@@ -18,14 +39,16 @@ const updateEquipment = async (req: Request, res: Response) => {
 
 // Add a new piece of equipment to an existing customer
 const addEquipment = async (req: Request, res: Response) => {
-  const customerId = req.body.customerId;
-  const equipmentDetails = req.body.equipment;
   try {
+    const customerId = req.body.customerId;
+    const equipmentDetails = req.body.equipment;
+    console.log(customerId, equipmentDetails);
     await Customer.findByIdAndUpdate(
       customerId,
       { $push: {equipment: equipmentDetails} },
       { new: true, safe: true, upsert: false }
     )
+    res.status(201).send('Success');
   } catch (error) {
     res.status(500).send('Error adding equipment details');
   }
@@ -47,6 +70,7 @@ const deleteEquipment = async (req: Request, res: Response) => {
 }
 
 export {
+  fetchEquipment,
   updateEquipment,
   addEquipment,
   deleteEquipment

@@ -26,14 +26,19 @@ const jwtCheck = auth({
 //app.use(jwtCheck);
 
 
-// api routes
+
+app.get('/', (req, res) => {
+  res.send("server");
+});
+
+
 app.use('/customers', customerRoutes);
 
 
 // start server
 app.listen(PORT, () => {
   connectDB().catch((err) => console.error('Database connection error:', err));
-  console.log('Running on coffee');
+  console.log(`running on port ${PORT}`);
 });
 
 

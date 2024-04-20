@@ -11,6 +11,7 @@ import {
 
 // equipment route imports
 import {
+  fetchEquipment,
   updateEquipment,
   addEquipment,
   deleteEquipment
@@ -29,6 +30,7 @@ router.get('/search', searchCustomers);
 router.patch('/:id', updateCustomer);
 router.delete('/:id', deleteCustomer);
 router.get('/:id', fetchCustomer);
+router.get('/equipment/:id', fetchEquipment);
 router.patch('/equipment/:id', updateEquipment);
 router.post('/equipment', addEquipment);
 router.delete('/equipment/:id', deleteEquipment);
