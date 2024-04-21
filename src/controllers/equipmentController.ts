@@ -5,19 +5,21 @@ import { Customer } from '../models/customerModel.js';
 
 const fetchEquipment = async (req: Request, res: Response) => {
   try {
-    const { equipmentId } = req.params;
-    const customer = await Customer.findOne({ "equipment._id": equipmentId });
+    const { customerId, equipmentId } = req.params;
+    console.log(`customer: ${customerId}, equipment: ${equipmentId}`)
+    const customer = await Customer.findById(customerId);
     if (!customer) {
+      console.log(customerId);
       return res.status(404).send("Customer not found"); // Customer not found
     }
     if (!customer.equipment) {
       return res.status(404).send("Equipment not found"); // Equipment not found
     }
-    const equipment = customer.equipment.find(e => e._id?.toString() == equipmentId);
+    const equipment = customer.equipment.id(equipmentId);
     res.status(200).json(equipment); // Return equipment details
   } catch (error) {
     console.error("Error fetching equipment details:", error);
-    res.status(500).send("Error fetching equipment details");
+    res.status(500).send(`Error fetching equipment details ${error}`);
   }
 }
 

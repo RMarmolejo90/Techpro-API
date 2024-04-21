@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
+const NoteSchema = new Schema({
+  title: {type: String, required: true},
+  note: {type: String, required: true},
+  date: {type: Date, required: true},
+})
+
 const EquipmentSchema = new Schema({
   name: {type: String, required: true},
   type: {type: String, required: true},
@@ -10,8 +16,8 @@ const EquipmentSchema = new Schema({
   model: {type: String, required: false},
   serial: {type: String, required: false},
   installDate: {type: Date, required: false},
-  equipmentNotes: {type:[{note: String, date: Date}], required: false}
-  }, {_id: true}
+  equipmentNotes: {type:[NoteSchema], required: false}
+  }, {_id: true, index: true}
 );
 
 const CustomerSchema = new Schema ({
@@ -20,7 +26,7 @@ const CustomerSchema = new Schema ({
   address: {type: String, index: true, required: true},
   zip: {type: Number, index: true, required: true},
   equipment: {type:[EquipmentSchema], required: false}, 
-  locationNotes: {type:[{note: String, date: Date}], required: false}
+  locationNotes: {type:[NoteSchema], required: false}
 })
 
 const Customer = mongoose.model('Customer', CustomerSchema);
