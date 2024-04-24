@@ -117,9 +117,49 @@ const deleteFilter = async (req:Request, res: Response) => {
   }
 }
 
+const addBelt = async (req: Request, res: Response) => {
+  try {
+    const belt: Belt = req.body;
+    const {customerId, equipmentId} = req.params;
+
+    const customer = await Customer.findById(customerId);
+    if (!customer) {res.status(404).send('Customer not found')}
+
+    const equipment = customer?.equipment?.id(equipmentId);
+    if (!equipment) {res.status(404).send('Equipment not found')}
+
+    equipment?.filters.push(belt);
+    await customer!.save();
+    res.status(201).send('Saved'); 
+  } catch (error) {
+    throw new Error(`Error saving info: ${error}`);
+  }
+}
+
+const deleteBelt = async (req:Request, res: Response) => {
+  const beltId = req.body;
+  const {customerId, equipmentId} = req.params;
+  try {
+    const customer =  await Customer.findById(customerId);
+    if (!customer) {res.status(404).send('Customer not found')}
+    const equipment = customer?.equipment?.id(equipmentId);
+    if (!equipment) {res.status(404).send('Equipment not found')}
+    equipment?.filters.id(beltId)?.deleteOne();
+    await customer?.save();
+    res.status(200).send('Successfully deleted');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error, could not delete the belt');
+  }
+}
+
 export {
   fetchEquipment,
   updateEquipment,
   addEquipment,
   deleteEquipment,
+  addFilter,
+  deleteFilter,
+  addBelt,
+  deleteBelt
 }
