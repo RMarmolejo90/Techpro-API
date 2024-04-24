@@ -17,6 +17,11 @@ import {
   deleteEquipment
 } from '../controllers/equipmentController.js'
 
+import {
+  addEquipmentNote,
+  deleteEquipmentNote
+} from '../controllers/notesController.js'
+
 // use express router
 const router = express.Router();
 
@@ -34,5 +39,7 @@ router.get('/:customerId/equipment/:equipmentId', fetchEquipment);
 router.patch('/equipment/:id', updateEquipment);
 router.post('/equipment', addEquipment);
 router.delete('/equipment/:id', deleteEquipment);
+router.post(':customerId/:equipmentId/notes', addEquipmentNote);
+router.delete(':customerId/:equipmentId/notes', deleteEquipmentNote);
 
 export default router;

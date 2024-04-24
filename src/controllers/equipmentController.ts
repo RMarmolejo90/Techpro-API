@@ -71,17 +71,10 @@ const deleteEquipment = async (req: Request, res: Response) => {
   }
 }
 
-const addEquipmentNote = async (req: Request, res: Response) => {
-  const note = req.body;
-  const {customerId, equipmentId} = req.params;
-  const customer = await Customer.findById(customerId);
-  const equipment = customer?.equipment?.id(equipmentId);
-  const data = equipment?.equipmentNotes?.push(note);
-}
 
 export {
   fetchEquipment,
   updateEquipment,
   addEquipment,
-  deleteEquipment
+  deleteEquipment,
 }
