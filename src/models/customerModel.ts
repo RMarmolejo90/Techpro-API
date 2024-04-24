@@ -7,11 +7,20 @@ const NoteSchema = new Schema({
   date: {type: Date, required: true},
 })
 
+const FilterSchema = new Schema({
+  size: {type: String, required: true},
+  quantity: {type: Number, required: true}
+})
+const BeltSchema = new Schema({
+  size: {type: String, required: true},
+  quantity: {type: Number, required: true}
+})
+
 const EquipmentSchema = new Schema({
   name: {type: String, required: true},
   type: {type: String, required: true},
-  filters: {type: {size: String, quantity: Number}, required: false},
-  belts: {type: {size: String, quantity: Number}, required: false},
+  filters: [FilterSchema],
+  belts: [BeltSchema],
   model: {type: String, required: false},
   serial: {type: String, required: false},
   installDate: {type: Date, required: false},

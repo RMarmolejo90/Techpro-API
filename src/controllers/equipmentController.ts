@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import { Customer } from '../models/customerModel.js';
 
+interface Filter {
+  size: string,
+  quantity: number
+}
+interface Belt {
+  size: string,
+  quantity: number
+}
+
 // Fetch Equipment Details using Equipment Id
 
 const fetchEquipment = async (req: Request, res: Response) => {
@@ -71,6 +80,42 @@ const deleteEquipment = async (req: Request, res: Response) => {
   }
 }
 
+
+const addFilter = async (req: Request, res: Response) => {
+  try {
+    const filter: Filter = req.body;
+    const {customerId, equipmentId} = req.params;
+
+    const customer = await Customer.findById(customerId);
+    if (!customer) {res.status(404).send('Customer not found')}
+
+    const equipment = customer?.equipment?.id(equipmentId);
+    if (!equipment) {res.status(404).send('Equipment not found')}
+
+    equipment?.filters.push(filter);
+    await customer!.save();
+    res.status(201).send('Saved'); 
+  } catch (error) {
+    throw new Error(`Error saving info: ${error}`);
+  }
+}
+
+const deleteFilter = async (req:Request, res: Response) => {
+  const filterId = req.body;
+  const {customerId, equipmentId} = req.params;
+  try {
+    const customer =  await Customer.findById(customerId);
+    if (!customer) {res.status(404).send('Customer not found')}
+    const equipment = customer?.equipment?.id(equipmentId);
+    if (!equipment) {res.status(404).send('Equipment not found')}
+    equipment?.filters.id(filterId)?.deleteOne();
+    await customer?.save();
+    res.status(200).send('Successfully deleted');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error, could not delete the filter');
+  }
+}
 
 export {
   fetchEquipment,
