@@ -19,7 +19,9 @@ import {
 
 import {
   addEquipmentNote,
-  deleteEquipmentNote
+  deleteEquipmentNote,
+  addLocationNote,
+  deleteLocationNote
 } from '../controllers/notesController.js'
 
 // use express router
@@ -39,7 +41,9 @@ router.get('/:customerId/equipment/:equipmentId', fetchEquipment);
 router.patch('/equipment/:id', updateEquipment);
 router.post('/equipment', addEquipment);
 router.delete('/equipment/:id', deleteEquipment);
-router.post(':customerId/:equipmentId/notes', addEquipmentNote);
-router.delete(':customerId/:equipmentId/notes', deleteEquipmentNote);
+router.post('/:customerId/equipment/:equipmentId/notes', addEquipmentNote);
+router.delete('/:customerId/equipment/:equipmentId/notes', deleteEquipmentNote);
+router.post('/:customerId/notes', addLocationNote);
+router.delete('/:customerId/notes', deleteLocationNote);
 
 export default router;
