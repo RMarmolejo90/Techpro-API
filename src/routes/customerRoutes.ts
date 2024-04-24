@@ -14,7 +14,11 @@ import {
   fetchEquipment,
   updateEquipment,
   addEquipment,
-  deleteEquipment
+  deleteEquipment,
+  addFilter,
+  deleteFilter,
+  addBelt,
+  deleteBelt
 } from '../controllers/equipmentController.js'
 
 import {
@@ -45,5 +49,9 @@ router.post('/:customerId/equipment/:equipmentId/notes', addEquipmentNote);
 router.delete('/:customerId/equipment/:equipmentId/notes', deleteEquipmentNote);
 router.post('/:customerId/notes', addLocationNote);
 router.delete('/:customerId/notes', deleteLocationNote);
+router.post('/:customerId/equipment/:equipmentId/filters', addFilter);
+router.delete('/:customerId/equipment/:equipmentId/filters', deleteFilter);
+router.post('/:customerId/equipment/:equipmentId/belts', addBelt);
+router.delete('/:customerId/equipment/:equipmentId/belts', deleteBelt);
 
 export default router;
