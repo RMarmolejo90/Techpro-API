@@ -18,11 +18,13 @@ interface SearchRequest {
 // Create new customer
 const createCustomer =  async (req: Request, res: Response) => {
   const {name, city, address, zip}: CustomerData = req.body
+  console.log(`Express server - ${name}, ${city}, ${address}, ${zip}`)
   const formattedName = formatString(name)
   const formattedCity = formatString(city)
   const formattedAddress = formatString(address)
   if (!zip || (zip <= 0) || (zip > 99999)) {return res.status(400).send({ error: "Please enter a valid zip code" });}
   else { 
+    console.log(name, city, address, zip, "processing");
       // reduce the chance of duplicate entries by checking the db for existing addresses
     if (await Customer.exists({address: formattedAddress, zip: zip}))
       { res.status(400).send({ error: "Customer already exists" })}
@@ -36,9 +38,9 @@ const createCustomer =  async (req: Request, res: Response) => {
             zip: formattedZip,
           });
     
-        await Customer.create(newCustomer);
-        res.status(201).send('New customer was created');
-        }
+        const saved = await newCustomer.save();
+        res.status(201).send({ message: 'New customer was created', customerId: saved._id });        }
+      
       catch (error) { 
         console.error(error);
         res.status(500).send('An error occurred while creating the customer'); 
