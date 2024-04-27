@@ -21,7 +21,7 @@ const createCustomer =  async (req: Request, res: Response) => {
   const formattedName = formatString(name)
   const formattedCity = formatString(city)
   const formattedAddress = formatString(address)
-  if (!zip) {return res.status(400).send({ error: "Missing required 'zip' field." });}
+  if (!zip || (zip <= 0) || (zip > 99999)) {return res.status(400).send({ error: "Please enter a valid zip code" });}
   else { 
       // reduce the chance of duplicate entries by checking the db for existing addresses
     if (await Customer.exists({address: formattedAddress, zip: zip}))
@@ -36,8 +36,8 @@ const createCustomer =  async (req: Request, res: Response) => {
             zip: formattedZip,
           });
     
-        await newCustomer.save();
-        res.status(201).send('New customer was created')
+        await Customer.create(newCustomer);
+        res.status(201).send('New customer was created');
         }
       catch (error) { 
         console.error(error);
