@@ -53,7 +53,6 @@ const addEquipment = async (req: Request, res: Response) => {
   try {
     const customerId = req.body.customerId;
     const equipmentDetails = req.body.equipment;
-    console.log(customerId, equipmentDetails);
     await Customer.findByIdAndUpdate(
       customerId,
       { $push: {equipment: equipmentDetails} },
@@ -61,6 +60,7 @@ const addEquipment = async (req: Request, res: Response) => {
     )
     res.status(201).send('Success');
   } catch (error) {
+    console.log(error)
     res.status(500).send('Error adding equipment details');
   }
 }
