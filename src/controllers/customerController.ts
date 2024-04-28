@@ -55,23 +55,27 @@ const createCustomer =  async (req: Request, res: Response) => {
 const searchCustomers = async (req: Request, res: Response): Promise<void> => {
   try { 
     const { searchType, searchText }: SearchRequest = req.body;
-    if (!searchType || !searchText) {res.json('insufficient request data');}
-    else {
+
+    if (!searchType || !searchText) {
+      res.json('insufficient request data');
+      return;
+    }
+
     const formattedText = formatString(searchText);
     
-    // Construct the query object dynamically
-    const query: Record<string, string> = {}; // Define query object
-    query[searchType] = formattedText; // Assign the property dynamically
+    // Construct the query object with $regex based on searchType
+    const query: Record<string, any> = {}; // Define query object
+    query[searchType] = { $regex: formattedText, $options: 'i' }; // Construct regex query based on searchType
 
-    const data = await Customer.find(query); 
+    const data = await Customer.find(query); // Find customers matching the dynamic query
     res.json(data);
-    }
-  } 
-  catch (error) {
+    
+  } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching customer data');
   }
 }
+
 
 // Fetch a specific customers data
 const fetchCustomer = async (req: Request, res: Response) => {
