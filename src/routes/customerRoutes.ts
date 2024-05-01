@@ -44,7 +44,7 @@ router.get('/:id', fetchCustomer);
 router.get('/:customerId/equipment/:equipmentId', fetchEquipment);
 router.patch('/equipment/:id', updateEquipment);
 router.post('/equipment', addEquipment);
-router.delete('/equipment/:id', deleteEquipment);
+router.delete('/:customerId/equipment/:equipmentId', deleteEquipment);
 router.post('/:customerId/equipment/:equipmentId/notes', addEquipmentNote);
 router.delete('/:customerId/equipment/:equipmentId/notes', deleteEquipmentNote);
 router.post('/:customerId/notes', addLocationNote);

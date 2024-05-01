@@ -97,7 +97,6 @@ const addFilter = async (req: Request, res: Response) => {
               size: filterSize,
               quantity: filterQty
             }
-            console.log(filter)
             equipment?.filters.push(filter);
             await customer!.save();
             res.status(201).send('Saved'); 
@@ -127,18 +126,24 @@ const deleteFilter = async (req:Request, res: Response) => {
 
 const addBelt = async (req: Request, res: Response) => {
   try {
-    const belt: Belt = req.body;
+    const beltSize = req.body.belt.size;
+    const beltQty = req.body.belt.quantity;
     const {customerId, equipmentId} = req.params;
-
     const customer = await Customer.findById(customerId);
     if (!customer) {res.status(404).send('Customer not found')}
-
-    const equipment = customer?.equipment?.id(equipmentId);
-    if (!equipment) {res.status(404).send('Equipment not found')}
-
-    equipment?.filters.push(belt);
-    await customer!.save();
-    res.status(201).send('Saved'); 
+      else {
+        const equipment = customer?.equipment?.id(equipmentId);
+        if (!equipment) {res.status(404).send('Equipment not found')}
+          else {
+            const belt = {
+              size: beltSize,
+              quantity: beltQty
+            }
+            equipment?.belts.push(belt);
+            await customer!.save();
+            res.status(201).send('Saved'); 
+        }
+      }
   } catch (error) {
     throw new Error(`Error saving info: ${error}`);
   }

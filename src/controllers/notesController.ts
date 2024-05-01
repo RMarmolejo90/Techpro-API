@@ -10,6 +10,7 @@ const addEquipmentNote = async (req: Request, res: Response) => {
   try {
     const note: Note = req.body;
     const {customerId, equipmentId} = req.params;
+    console.info(`note: ${note}, cust: ${customerId}, eq: ${equipmentId}`);
 
     const customer = await Customer.findById(customerId);
     if (!customer) {res.status(404).send('Customer not found')}

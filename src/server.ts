@@ -1,13 +1,15 @@
 import 'dotenv/config';
 import express from 'express';
-import { Response, Request } from 'express';
 import helmet from 'helmet';
 import { auth } from 'express-oauth2-jwt-bearer';
 import customerRoutes from './routes/customerRoutes.js';
 import connectDB from './utils/connectDB.js';
+import cors from "cors";
+
 const app = express();
 const PORT = process.env.PORT || 3001
 
+app.use(cors());
 app.use(express.json());
 
 // use helmet for security headers

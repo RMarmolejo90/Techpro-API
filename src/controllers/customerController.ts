@@ -65,7 +65,7 @@ const searchCustomers = async (req: Request, res: Response): Promise<void> => {
     
     // Construct the query object with $regex based on searchType
     const query: Record<string, any> = {}; // Define query object
-    query[searchType] = { $regex: formattedText, $options: 'i' }; // Construct regex query based on searchType
+    query[searchType] = { $regex: formattedText, $options: 'i' }; 
 
     const data = await Customer.find(query); // Find customers matching the dynamic query
     res.json(data);
