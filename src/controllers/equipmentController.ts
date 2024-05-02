@@ -1,13 +1,29 @@
 import { Request, Response } from "express";
 import { Customer } from '../models/customerModel.js';
 
-interface Filter {
-  size: string,
-  quantity: number
+interface Equipment {
+name: string,
+type: string,
+filters: Filters[] | undefined,
+belts: Belts[] | undefined,
+model: string | undefined,
+serial: string | undefined,
+installDate: string | undefined,
+equipmentNotes: Notes[] | undefined,
+_id: string
 }
-interface Belt {
-  size: string,
-  quantity: number
+interface Filters {
+size: string, 
+quantity: number
+}
+
+interface Belts {
+size: string, 
+quantity: number
+}
+interface Notes {
+note: string, 
+date: Date
 }
 
 // Fetch Equipment Details using Equipment Id
@@ -15,10 +31,8 @@ interface Belt {
 const fetchEquipment = async (req: Request, res: Response) => {
   try {
     const { customerId, equipmentId } = req.params;
-    console.log(`customer: ${customerId}, equipment: ${equipmentId}`)
     const customer = await Customer.findById(customerId);
     if (!customer) {
-      console.log(customerId);
       return res.status(404).send("Customer not found"); // Customer not found
     }
     if (!customer.equipment) {
@@ -35,16 +49,34 @@ const fetchEquipment = async (req: Request, res: Response) => {
 
 // Updates the properties of existing equipment
 const updateEquipment = async (req: Request, res: Response) => {
-  try {const { equipmentId } = req.params;
-    const equipmentUpdates: string = req.body;
-    await Customer.findOneAndUpdate({_id: equipmentId},
-      { $set: {"equipment.$": equipmentUpdates } }, { new: true }
+
+try {
+  const { customerId, equipmentId } = req.params;
+  const customer = await Customer.findById(customerId);
+  const equipmentUpdates = req.body.editedEquipment;
+
+  if (!customer) {
+    res.status(404).send('Customer not found');
+  } else {
+    await Customer.findOneAndUpdate(
+      { 'equipment._id': equipmentId },
+      { $set: {
+          'equipment.$.name': equipmentUpdates.name,
+          'equipment.$.type': equipmentUpdates.type,
+          'equipment.$.model': equipmentUpdates.model,
+          'equipment.$.serial': equipmentUpdates.serial,
+          'equipment.$.installDate': equipmentUpdates.installDate,
+        }
+      },     
+      { new: true }
     );
+
     res.status(200).send('Equipment Updated');
-  } 
-  catch {
-      res.status(500).send('Error updating data');
-    }
+  }
+} catch (error) {
+  console.error(error);
+  res.status(500).send('Error updating data');
+}
 }
 
 
