@@ -25,8 +25,7 @@ const jwtCheck = auth({
 
 
 // enforce on all endpoints
-//app.use(jwtCheck);
-
+app.use(jwtCheck);
 
 
 app.get('/', (req, res) => {
@@ -40,6 +39,8 @@ app.use('/customers', customerRoutes);
 // start server
 app.listen(PORT, () => {
   connectDB().catch((err) => console.error('Database connection error:', err));
+  console.log(process.env.AUDIENCE);
+  console.log(process.env.ISSUERBASEURL);
   console.log(`running on port ${PORT}`);
 });
 

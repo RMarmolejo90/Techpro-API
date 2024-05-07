@@ -26,6 +26,8 @@
     "url": "https://github.com/rmarmolejo90/techpro-api/issues"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^3.5.0",
+    "axios": "^1.6.8",
     "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
