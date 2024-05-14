@@ -24,7 +24,7 @@ const jwtCheck = auth({
 
 
 // enforce on all endpoints
-//a pp.use(jwtCheck);
+// app.use(jwtCheck);
 
 
 app.get('/', (req, res) => {
