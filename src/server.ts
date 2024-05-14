@@ -15,7 +15,6 @@ app.use(express.json());
 // use helmet for security headers
 app.use(helmet());
 
-//connect to database
 
 const jwtCheck = auth({
   audience: process.env.AUDIENCE,
@@ -39,8 +38,6 @@ app.use('/customers', customerRoutes);
 // start server
 app.listen(PORT, () => {
   connectDB().catch((err) => console.error('Database connection error:', err));
-  console.log(process.env.AUDIENCE);
-  console.log(process.env.ISSUERBASEURL);
   console.log(`running on port ${PORT}`);
 });
 

@@ -8,7 +8,7 @@ interface Note {
 
 const addEquipmentNote = async (req: Request, res: Response) => {
   try {
-    const note: Note = req.body;
+    const note: Note = req.body.data;
     const {customerId, equipmentId} = req.params;
     console.info(`note: ${note}, cust: ${customerId}, eq: ${equipmentId}`);
 
